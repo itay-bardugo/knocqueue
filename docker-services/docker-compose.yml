@@ -1,0 +1,74 @@
+version: '3.7'
+
+volumes:
+  kq-console-pgdata:
+
+services:
+  postgres:
+    container_name: kq-postgres
+    build:
+      context: ./console/postgres/
+      dockerfile: Dockerfile
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+    volumes:
+      - kq-console-pgdata:/var/lib/postgresql/data
+#
+  postgres-adminer:
+    container_name: kq-postgres-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  cosnole-wsgi:
+    shm_size: 1000000000
+    container_name: kq-console-wsgi
+    restart: always
+    build:
+      context: ../
+      dockerfile: docker-services/console/python/Dockerfile
+    tty: true
+    volumes:
+      - ../:/home/centos
+    depends_on:
+      - postgres
+    command: python3.8 knocqueue/services/console/manage.py runserver 0.0.0.0:8081
+    env_file:
+      - ../knocqueue/services/console/.env
+    ports:
+    - 8081
+
+#  wsgi-mailer_send-worker:
+#    shm_size: 1000000000
+#    #container_name: wsgi-scheduelr-timer-add-wroker01
+#    restart: always
+#    build:
+#      context: ../
+#      dockerfile: docker-services/python/mailer/Dockerfile
+#    tty: true
+#    volumes:
+#      - ../:/home/centos
+#    depends_on:
+#      - mysql
+#      - rabbitMQ
+#      - redis
+#    command: python3.8 -m workers.emails.send
+#    env_file:
+#      - ../mailer/.env
+  #    deploy:
+  #      mode: replicated
+  #      replicas: 4
+
+  nginx:
+    container_name: kq-nginx
+    build: nginx
+    restart: always
+    tty: true
+    links:
+      - cosnole-wsgi
+
+    ports:
+      - "80:80"
