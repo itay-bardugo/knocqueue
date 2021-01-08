@@ -1,12 +1,17 @@
 asgiref==3.3.1
 click==7.1.2
 Django==3.1.4
+ecdsa==0.14.1
 Flask==1.1.2
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 psycopg2-binary==2.8.6
+pyasn1==0.4.8
+python-jose==3.2.0
 pytz==2020.5
+rsa==4.6
+six==1.15.0
 SQLAlchemy==1.3.22
 sqlparse==0.4.1
 Werkzeug==1.0.1
