@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
   kq-console-pgdata:
+  kq-autentication-pgdata:
 
 services:
   postgres:
@@ -41,6 +42,40 @@ services:
     ports:
     - 8081
 
+  auth-wsgi:
+    shm_size: 1000000000
+    #container_name: kq-ms-auth-wsgi
+    restart: always
+    build:
+      context: ../
+      dockerfile: docker-services/console/python/Dockerfile
+    tty: true
+    volumes:
+      - ../:/home/centos
+    depends_on:
+      - postgres
+    command: python3.8 knocqueue/services/authentication/devserver.py
+    env_file:
+      - ../knocqueue/services/authentication/.env
+
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - 8082
+
+  auth-postgres:
+      container_name: kq-auth-postgres
+      build:
+        context: ./authentication/postgres/
+        dockerfile: Dockerfile
+      image: postgres
+      restart: always
+      environment:
+        POSTGRES_PASSWORD: example
+
+      volumes:
+        - kq-autentication-pgdata:/var/lib/postgresql/data
 #  wsgi-mailer_send-worker:
 #    shm_size: 1000000000
 #    #container_name: wsgi-scheduelr-timer-add-wroker01
