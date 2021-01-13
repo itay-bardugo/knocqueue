@@ -24,23 +24,24 @@ services:
     restart: always
     ports:
       - 8080:8080
-  cosnole-wsgi:
-    shm_size: 1000000000
-    container_name: kq-console-wsgi
-    restart: always
-    build:
-      context: ../
-      dockerfile: docker-services/console/python/Dockerfile
-    tty: true
-    volumes:
-      - ../:/home/centos
-    depends_on:
-      - postgres
-    command: python3.8 knocqueue/services/console/manage.py runserver 0.0.0.0:8081
-    env_file:
-      - ../knocqueue/services/console/.env
-    ports:
-    - 8081
+  #web
+#  cosnole-wsgi:
+#    shm_size: 1000000000
+#    container_name: kq-console-wsgi
+#    restart: always
+#    build:
+#      context: ../
+#      dockerfile: docker-services/console/python/Dockerfile
+#    tty: true
+#    volumes:
+#      - ../:/home/centos
+#    depends_on:
+#      - postgres
+#    command: python3.8 knocqueue/services/console_web/devserver.py
+#    env_file:
+#      - ../knocqueue/services/console_web/.env
+#    ports:
+#    - 8081
 
   auth-wsgi:
     shm_size: 1000000000
@@ -54,9 +55,9 @@ services:
       - ../:/home/centos
     depends_on:
       - postgres
-    command: python3.8 knocqueue/services/authentication/devserver.py
+    command: python3.8 knocqueue/services/authentication_ms/devserver.py
     env_file:
-      - ../knocqueue/services/authentication/.env
+      - ../knocqueue/services/authentication_ms/.env
 
     deploy:
       mode: replicated
@@ -102,8 +103,8 @@ services:
     build: nginx
     restart: always
     tty: true
-    links:
-      - cosnole-wsgi
+#    links:
+#      - cosnole-wsgi
 
     ports:
       - "80:80"
