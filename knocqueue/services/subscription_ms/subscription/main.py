@@ -1,2 +1,2 @@
 from . import app
-from authentication import routes
+from . import routes

@@ -3,6 +3,7 @@ version: '3.7'
 volumes:
   kq-console-pgdata:
   kq-autentication-pgdata:
+  kq-subscription-pgdata:
 
 services:
   postgres:
@@ -13,17 +14,25 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: master
 
     volumes:
       - kq-console-pgdata:/var/lib/postgresql/data
-#
-  postgres-adminer:
-    container_name: kq-postgres-adminer
-    image: adminer
+  postgres-subscription:
+    container_name: kq-postgres-subscription
+    build:
+      context: ./console/postgres/
+      dockerfile: Dockerfile
+    image: postgres
     restart: always
-    ports:
-      - 8080:8080
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: master
+
+    volumes:
+      - kq-subscription-pgdata:/var/lib/postgresql/data
+#
   #web
 #  cosnole-wsgi:
 #    shm_size: 1000000000
@@ -42,6 +51,27 @@ services:
 #      - ../knocqueue/services/console_web/.env
 #    ports:
 #    - 8081
+  subscription-ms:
+    shm_size: 1000000000
+    #container_name: kq-ms-auth-wsgi
+    restart: always
+    build:
+      context: ../
+      dockerfile: docker-services/subscription/python/Dockerfile
+    tty: true
+    volumes:
+      - ../:/home/centos
+    depends_on:
+      - postgres
+    command: python3.8 knocqueue/services/subscription_ms/devserver.py
+    env_file:
+      - ../knocqueue/services/subscription_ms/.env
+
+    deploy:
+      mode: replicated
+      replicas: 1
+    ports:
+      - 8083
 
   auth-wsgi:
     shm_size: 1000000000
