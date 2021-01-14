@@ -1,4 +1,4 @@
-from . import app
+from src import app
 
 
 @app.route('/')

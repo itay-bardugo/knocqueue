@@ -1,4 +1,4 @@
-from subscription.main import app
+from src.main import app
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 8083, True)

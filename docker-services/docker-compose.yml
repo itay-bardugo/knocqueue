@@ -27,30 +27,33 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: 123456
       POSTGRES_USER: master
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: main
 
     volumes:
       - kq-subscription-pgdata:/var/lib/postgresql/data
-#
+    ports:
+      - '5432:5432'
+  #
   #web
-#  cosnole-wsgi:
-#    shm_size: 1000000000
-#    container_name: kq-console-wsgi
-#    restart: always
-#    build:
-#      context: ../
-#      dockerfile: docker-services/console/python/Dockerfile
-#    tty: true
-#    volumes:
-#      - ../:/home/centos
-#    depends_on:
-#      - postgres
-#    command: python3.8 knocqueue/services/console_web/devserver.py
-#    env_file:
-#      - ../knocqueue/services/console_web/.env
-#    ports:
-#    - 8081
+  #  cosnole-wsgi:
+  #    shm_size: 1000000000
+  #    container_name: kq-console-wsgi
+  #    restart: always
+  #    build:
+  #      context: ../
+  #      dockerfile: docker-services/console/python/Dockerfile
+  #    tty: true
+  #    volumes:
+  #      - ../:/home/centos
+  #    depends_on:
+  #      - postgres
+  #    command: python3.8 knocqueue/services/console_web/devserver.py
+  #    env_file:
+  #      - ../knocqueue/services/console_web/.env
+  #    ports:
+  #    - 8081
   subscription-ms:
     shm_size: 1000000000
     #container_name: kq-ms-auth-wsgi
@@ -64,6 +67,8 @@ services:
     depends_on:
       - postgres
     command: python3.8 knocqueue/services/subscription_ms/devserver.py
+    environment:
+      FLASK_APP: 'knocqueue/services/subscription_ms/src/main:app'
     env_file:
       - ../knocqueue/services/subscription_ms/.env
 
@@ -96,45 +101,33 @@ services:
       - 8082
 
   auth-postgres:
-      container_name: kq-auth-postgres
-      build:
-        context: ./authentication/postgres/
-        dockerfile: Dockerfile
-      image: postgres
-      restart: always
-      environment:
-        POSTGRES_PASSWORD: example
+    container_name: kq-auth-postgres
+    build:
+      context: ./authentication/postgres/
+      dockerfile: Dockerfile
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
 
-      volumes:
-        - kq-autentication-pgdata:/var/lib/postgresql/data
-#  wsgi-mailer_send-worker:
-#    shm_size: 1000000000
-#    #container_name: wsgi-scheduelr-timer-add-wroker01
-#    restart: always
-#    build:
-#      context: ../
-#      dockerfile: docker-services/python/mailer/Dockerfile
-#    tty: true
-#    volumes:
-#      - ../:/home/centos
-#    depends_on:
-#      - mysql
-#      - rabbitMQ
-#      - redis
-#    command: python3.8 -m workers.emails.send
-#    env_file:
-#      - ../mailer/.env
-  #    deploy:
-  #      mode: replicated
-  #      replicas: 4
+    volumes:
+      - kq-autentication-pgdata:/var/lib/postgresql/data
 
   nginx:
     container_name: kq-nginx
     build: nginx
     restart: always
     tty: true
-#    links:
-#      - cosnole-wsgi
+    #    links:
+    #      - cosnole-wsgi
+
+    networks:
+      default:
+        aliases:
+          - console.knocqueue.com
+          - auth.knocqueue.com
+          - subscription.knocqueue.com
 
     ports:
       - "80:80"
+
