@@ -16,7 +16,6 @@ services:
     environment:
       POSTGRES_PASSWORD: 123456
       POSTGRES_USER: master
-
     volumes:
       - kq-console-pgdata:/var/lib/postgresql/data
   postgres-subscription:
@@ -30,7 +29,6 @@ services:
       POSTGRES_USER: master
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: main
-
     volumes:
       - kq-subscription-pgdata:/var/lib/postgresql/data
     ports:
@@ -93,7 +91,6 @@ services:
     command: python3.8 knocqueue/services/authentication_ms/devserver.py
     env_file:
       - ../knocqueue/services/authentication_ms/.env
-
     deploy:
       mode: replicated
       replicas: 1
@@ -114,7 +111,7 @@ services:
       - kq-autentication-pgdata:/var/lib/postgresql/data
 
   nginx:
-    container_name: kq-nginx
+    container_name: kq-nginx-internal
     build: nginx
     restart: always
     tty: true
@@ -124,10 +121,14 @@ services:
     networks:
       default:
         aliases:
-          - console.knocqueue.com
+          - console.knocqueue.com #this should be under the public network
           - auth.knocqueue.com
           - subscription.knocqueue.com
-
     ports:
       - "80:80"
 
+networks:
+  public:
+    name: kq-public
+  default:
+    name: kq-private
