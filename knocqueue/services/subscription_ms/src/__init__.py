@@ -12,6 +12,7 @@ migrate = Migrate(app, db, directory=settings.MIGRATION_PATH)
 api = Api(app)
 
 
+# todo: model properly
 class ServiceToServiceHandshakeMiddleWare:
     def __init__(self, app):
         self.app = app
