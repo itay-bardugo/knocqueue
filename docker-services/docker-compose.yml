@@ -117,6 +117,9 @@ services:
     tty: true
     #    links:
     #      - cosnole-wsgi
+    depends_on:
+      - subscription-ms
+      - auth-wsgi
 
     networks:
       default:
