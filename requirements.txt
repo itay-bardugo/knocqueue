@@ -1,7 +1,9 @@
 alembic==1.4.3
 aniso8601==8.1.0
 asgiref==3.3.1
+certifi==2020.12.5
 cffi==1.14.4
+chardet==4.0.0
 click==7.1.2
 cryptography==3.3.1
 Django==3.1.4
@@ -10,6 +12,7 @@ Flask==1.1.2
 Flask-Migrate==2.5.3
 Flask-RESTful==0.3.8
 Flask-SQLAlchemy==2.4.4
+idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 jwcrypto==0.8
@@ -21,8 +24,10 @@ pycparser==2.20
 python-dateutil==2.8.1
 python-editor==1.0.4
 pytz==2020.5
+requests==2.25.1
 rsa==4.6
 six==1.15.0
 SQLAlchemy==1.3.22
 sqlparse==0.4.1
+urllib3==1.26.2
 Werkzeug==1.0.1
