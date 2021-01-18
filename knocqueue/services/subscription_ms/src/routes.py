@@ -1,11 +1,5 @@
-from src import app
+from src import api
+from src.rest.controllers import (Subscription)
 
 
-@app.route('/')
-def index():
-    return 'hi!'
-
-
-@app.route('/register')
-def register():
-    ...
+api.add_resource(Subscription, '/')
