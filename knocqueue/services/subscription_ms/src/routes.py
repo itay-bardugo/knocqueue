@@ -1,5 +1,5 @@
 from src import api
-from src.rest.controllers import (Subscription)
+from src.controllers import (Subscription)
 
 
 api.add_resource(Subscription, '/')

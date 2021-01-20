@@ -33,6 +33,20 @@ services:
       - kq-subscription-pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+
+  auth-postgres:
+    container_name: kq-auth-postgres
+    build:
+      context: ./authentication/postgres/
+      dockerfile: Dockerfile
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+    volumes:
+      - kq-autentication-pgdata:/var/lib/postgresql/data
+
   #
   #web
   #  cosnole-wsgi:
@@ -61,10 +75,10 @@ services:
       dockerfile: docker-services/subscription/python/Dockerfile
     tty: true
     volumes:
-      - ../:/home/centos
+      - ../:/usr/src/app
     depends_on:
       - postgres
-    command: python3.8 knocqueue/services/subscription_ms/devserver.py
+    command: python knocqueue/services/subscription_ms/devserver.py
     environment:
       FLASK_APP: 'knocqueue/services/subscription_ms/src/main:app'
     env_file:
@@ -82,13 +96,13 @@ services:
     restart: always
     build:
       context: ../
-      dockerfile: docker-services/console/python/Dockerfile
+      dockerfile: docker-services/authentication/python/Dockerfile
     tty: true
     volumes:
-      - ../:/home/centos
+      - ../:/usr/src/app
     depends_on:
       - postgres
-    command: python3.8 knocqueue/services/authentication_ms/devserver.py
+    command: python knocqueue/services/authentication_ms/devserver.py
     env_file:
       - ../knocqueue/services/authentication_ms/.env
     deploy:
@@ -97,18 +111,7 @@ services:
     ports:
       - 8082
 
-  auth-postgres:
-    container_name: kq-auth-postgres
-    build:
-      context: ./authentication/postgres/
-      dockerfile: Dockerfile
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
 
-    volumes:
-      - kq-autentication-pgdata:/var/lib/postgresql/data
 
   nginx:
     container_name: kq-nginx-internal
