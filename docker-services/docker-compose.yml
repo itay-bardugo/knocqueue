@@ -133,6 +133,26 @@ services:
     ports:
       - "80:80"
 
+#  nginx-public:
+#    container_name: kq-nginx-public
+#    build: nginx
+#    restart: always
+#    tty: true
+#    #    links:
+#    #      - cosnole-wsgi
+#    depends_on:
+#      - subscription-ms
+#      - auth-wsgi
+#
+#    networks:
+#      default:
+#        aliases:
+#          - console.knocqueue.com #this should be under the public network
+#          - auth.knocqueue.com
+#          - subscription.knocqueue.com
+#    ports:
+#      - "8080:80"
+
 networks:
   public:
     name: kq-public
