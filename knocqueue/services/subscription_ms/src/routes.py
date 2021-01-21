@@ -1,5 +1,14 @@
-from src import api
-from src.controllers import (Subscription)
+from src import api, app
+from src.controllers import (Register)
+
+api.add_resource(Register, '/register/<string:method>')
 
 
-api.add_resource(Subscription, '/')
+@app.before_request
+def on_init():
+    ...
+
+
+@app.teardown_request
+def on_teardown(x):
+    ...

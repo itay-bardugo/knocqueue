@@ -1,1 +1,1 @@
-from .subscription import Subscription
+from .register import Register
