@@ -9,7 +9,7 @@ class Factory(metaclass=abc.ABCMeta):
     def __init__(self):
         self._builders = {}
 
-    def register(self, method, builder):
+    def register(self, method, builder: 'Builder'):
         self._builders[method] = builder
 
     def make(self, method, *args, **kwargs):
@@ -18,5 +18,5 @@ class Factory(metaclass=abc.ABCMeta):
 
 class Builder(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def __call__(self, dto: DTO):
+    def __call__(self, *args, **kwargs):
         ...
