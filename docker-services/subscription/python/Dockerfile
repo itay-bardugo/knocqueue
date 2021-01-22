@@ -30,15 +30,20 @@
 # #EXPOSE 8081
 #
 # #CMD ["python3.8", "app.py"]
-#
 
 FROM python:3
 
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./your-daemon-or-script.py"
+
+RUN python -m pip install --user --upgrade setuptools wheel
+WORKDIR /usr/src/app/knocqueue/links
+RUN python setup.py sdist bdist_wheelkk
+
+WORKDIR /usr/src/app
+RUN python -m pip install --no-cache-dir -v --find-links knocqueue/links/dist  -r requirements.txt
+CMD [ "python", "./your-daemon-or-script.py" ]
