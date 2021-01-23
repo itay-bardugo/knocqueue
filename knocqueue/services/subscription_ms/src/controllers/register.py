@@ -11,6 +11,6 @@ class Register(Resource):
     def post(self, method):
         try:
             register = factory.make(Register.__map[method])
-            return register.register()
+            return register.execute()
         except KeyError:
             return 'Bad Request', 400

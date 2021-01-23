@@ -1,7 +1,8 @@
 from knocqueue_utils.factories import (Factory, Builder)
-from src.services.registration.credentials import RegisterService
-from src.services.registration.credentials import RegisterWithCredentialsService
+from src.services.registration import RegisterService
+from src.strategies.registration.credentials import RegisterWithCredentialsStrategy
 from src.repositories.subscription import SubscriptionRepository
+
 
 class RegistrationFactory(Factory):
     def make(self, method, *args, **kwargs) -> RegisterService:
@@ -11,6 +12,7 @@ class RegistrationFactory(Factory):
 class CredentialsBuilder(Builder):
 
     def __call__(self, *args, **kwargs):
-        return RegisterWithCredentialsService(
-            SubscriptionRepository(), *args, **kwargs
+        return RegisterService(
+            SubscriptionRepository(),
+            RegisterWithCredentialsStrategy()
         )
