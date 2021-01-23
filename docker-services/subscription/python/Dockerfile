@@ -45,5 +45,5 @@ WORKDIR /usr/src/app/knocqueue/links
 RUN python setup.py sdist bdist_wheel
 
 WORKDIR /usr/src/app
-RUN python -m pip install --no-cache-dir -v --find-links knocqueue/links/dist  -r requirements.txt
+RUN python -m pip install --no-cache-dir --find-links knocqueue/links/dist  -r requirements.txt
 CMD [ "python", "./your-daemon-or-script.py" ]
