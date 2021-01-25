@@ -1,7 +1,7 @@
 from src import api, app
-from src.controllers import (Register)
+from src.http.controllers import (Subscription)
 
-api.add_resource(Register, '/register/<string:method>')
+api.add_resource(Subscription, '/subscription', '/subscription/register/<string:method>')
 
 
 @app.before_request

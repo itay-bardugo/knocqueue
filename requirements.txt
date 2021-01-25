@@ -21,7 +21,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 jwcrypto==0.8
 keyring==21.2.1
-knocqueue-utils-KNOCQUEUE==0.0.1
+knocqueue-utils-KNOCQUEUE==0.1.0
 Mako==1.1.4
 MarkupSafe==1.1.1
 marshmallow==3.10.0

@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
     name="knocqueue-utils-KNOCQUEUE", # Replace with your own username
-    version="0.0.1",
+    version="0.1.0",
     author="itay bardugo",
     author_email="itaybardugo91@gmail.com",
     description="utils package",
