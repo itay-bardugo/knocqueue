@@ -23,6 +23,7 @@ keyring==21.2.1
 knocqueue-utils-KNOCQUEUE==0.0.1
 Mako==1.1.4
 MarkupSafe==1.1.1
+marshmallow==3.10.0
 packaging==20.4
 pkginfo==1.5.0.1
 psycopg2-binary==2.8.6
