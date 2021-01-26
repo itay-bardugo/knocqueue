@@ -11,7 +11,7 @@ class Subscription(Resource):
         'simple': 'credentials'
     }
 
-    def post(self, method):
+    def get(self, method):
         try:
             register = factory.make(Subscription.__map[method])
             return register.register(request.args)
@@ -20,5 +20,5 @@ class Subscription(Resource):
         except KeyError:
             return 'Bad Request', 400
 
-    def get(self):
-        return 'get'
+    # def get(self):
+    #     return 'get'
