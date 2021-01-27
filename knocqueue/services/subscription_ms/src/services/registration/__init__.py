@@ -1,13 +1,14 @@
 from src.repositories import Repository
 from src.strategies.registration import RegistrationStrategy
-from marshmallow import Schema
+from src.http.schema.subscription import Registration
+from typing import Type
 
 
 class RegisterService:
-    def __init__(self, repository: Repository, strategy: RegistrationStrategy, schema: Schema):
+    def __init__(self, repository: Type[Repository], strategy: RegistrationStrategy, schema: Type[Registration]):
         self._repository = repository
         self._strategy = strategy
-        self._schema = schema
+        self._schema = schema(repository=self._repository)
 
     def _validate(self, payload):
         self._schema.load(payload)  # validate the payload

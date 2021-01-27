@@ -1,8 +1,10 @@
 from src.repositories.subscription import SubscriptionRepository
 from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema, types
+import abc
+from typing import Type
 
 
-class _Registration(Schema):
+class Registration(Schema, metaclass=abc.ABCMeta):
     class Meta:
         unknown = INCLUDE
 
@@ -11,7 +13,7 @@ class _Registration(Schema):
     allow_news_letter = fields.Int(required=False, data_key='allowNewsLetter')
 
     def __init__(self, **kwargs):
-        self.__repository: SubscriptionRepository = kwargs.pop('repository')
+        self.__repository: Type[SubscriptionRepository] = kwargs.pop('repository')
         super().__init__(**kwargs)
 
     @validates_schema
@@ -20,5 +22,5 @@ class _Registration(Schema):
             raise ValidationError('user already exists')
 
 
-class CredentialsRegistrationSchema(_Registration):
+class CredentialsRegistrationSchema(Registration):
     ...

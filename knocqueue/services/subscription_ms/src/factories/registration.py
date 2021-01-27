@@ -16,5 +16,5 @@ class CredentialsBuilder(Builder):
         return RegisterService(
             SubscriptionRepository,
             RegisterWithCredentialsStrategy(),
-            CredentialsRegistrationSchema(repository=SubscriptionRepository)
+            CredentialsRegistrationSchema
         )
