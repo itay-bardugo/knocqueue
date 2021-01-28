@@ -1,6 +1,5 @@
 from src.repositories.subscription import SubscriptionRepository
-from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema, types
-import abc
+from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema
 from typing import Type
 from knocqueue_utils.statement import When
 
