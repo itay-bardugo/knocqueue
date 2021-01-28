@@ -4,13 +4,13 @@ import abc
 from typing import Type
 
 
-class Registration(Schema, metaclass=abc.ABCMeta):
+class Registration(Schema):
     class Meta:
         unknown = INCLUDE
 
     email = fields.Email(required=True, data_key='email')
     password = fields.Str(required=True, data_key='password')
-    allow_news_letter = fields.Int(required=False, data_key='allowNewsLetter')
+    allow_news_letter = fields.Bool(required=False, data_key='allowNewsLetter')
 
     def __init__(self, **kwargs):
         self.__repository: Type[SubscriptionRepository] = kwargs.pop('repository')
@@ -19,7 +19,7 @@ class Registration(Schema, metaclass=abc.ABCMeta):
     @validates_schema
     def validate_registration(self, data, **kwargs):
         if self.__repository.get_by_email(data['email']) is not None:
-            raise ValidationError('user already exists')
+            raise ValidationError({'code': 405})
 
 
 class CredentialsRegistrationSchema(Registration):
