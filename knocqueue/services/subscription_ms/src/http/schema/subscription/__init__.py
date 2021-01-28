@@ -2,6 +2,7 @@ from src.repositories.subscription import SubscriptionRepository
 from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema, types
 import abc
 from typing import Type
+from knocqueue_utils.statement import When
 
 
 class Registration(Schema):
@@ -18,8 +19,10 @@ class Registration(Schema):
 
     @validates_schema
     def validate_registration(self, data, **kwargs):
-        if self.__repository.get_by_email(data['email']) is not None:
-            raise ValidationError({'code': 405})
+        When(self.__repository.get_by_email(data['email'])) \
+            .happens() \
+            .then \
+            .raise_an_error(ValidationError({'code': 405}))
 
 
 class CredentialsRegistrationSchema(Registration):
