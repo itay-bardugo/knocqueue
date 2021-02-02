@@ -1,9 +1,8 @@
+from knocqueue_utils.statement import When, Expression
 import abc
-from typing import Type
-from knocqueue_utils.statement import When
 
 
-class IWhen(metaclass=abc.ABCMeta):
+class IWhen(abc.ABCMeta):
     @abc.abstractmethod
-    def when(self) -> Type[When]:
+    def when(self, expression) -> Expression:
         ...

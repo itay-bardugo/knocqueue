@@ -14,7 +14,7 @@ class CredentialsBuilder(Builder):
 
     def __call__(self, *args, **kwargs):
         return RegisterService(
-            SubscriptionRepository,
-            RegisterWithCredentialsStrategy(),
-            CredentialsRegistrationSchema
+            repository=SubscriptionRepository,
+            strategy=RegisterWithCredentialsStrategy(),
+            schema=CredentialsRegistrationSchema
         )

@@ -1,13 +1,10 @@
 from src.repositories.subscription import SubscriptionRepository
-from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema
 from typing import Type
-from knocqueue_utils.statement import When
+from knocqueue_utils.schema import BaseSchema
+from marshmallow import fields, ValidationError
 
 
-class Registration(Schema):
-    class Meta:
-        unknown = INCLUDE
-
+class Registration(BaseSchema):
     email = fields.Email(required=True, data_key='email')
     password = fields.Str(required=True, data_key='password')
     allow_news_letter = fields.Bool(required=False, data_key='allowNewsLetter')
@@ -16,9 +13,8 @@ class Registration(Schema):
         self.__repository: Type[SubscriptionRepository] = kwargs.pop('repository')
         super().__init__(**kwargs)
 
-    @validates_schema
     def validate_registration(self, data, **kwargs):
-        When(self.__repository.get_by_email(data['email'])) \
+        self.when(self.__repository.get_by_email(data['email'])) \
             .happens() \
             .then \
             .raise_an_error(ValidationError({'code': 405}))

@@ -72,7 +72,7 @@ class _Expression:
 class When(type):
     _expression = _Expression()
 
-    def __new__(mcs, expression: bool):
+    def __new__(mcs, expression) -> _Expression:
         if mcs._expression is None:
             mcs._expression = mcs._Expression()
         mcs._expression._setup()
@@ -81,3 +81,5 @@ class When(type):
 
     def kill(cls):
         cls._expression = None
+
+Expression = _Expression
