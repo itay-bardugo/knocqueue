@@ -20,5 +20,3 @@ class Subscription(Resource):
         except KeyError:
             return 'Bad Request', 400
 
-    def get(self):
-        return 'get'
