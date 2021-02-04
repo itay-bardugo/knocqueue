@@ -36,19 +36,10 @@ class _Then(_BaseThen):
 class _Expression:
     def __init__(self):
         self._checks = set()
-        self._value = None
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, v):
-        self._value = v
+        self.value = None
 
     def _setup(self):
-        vars_ = vars(self)
-        vars_ = {k: None for k in vars_}
+        self.__init__()
         return self
 
     def _happens(self):
