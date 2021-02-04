@@ -14,7 +14,10 @@ class BaseSchema(Schema, IWhen):
     def when(self, expression) -> Expression:
         return When(expression)
 
-    @abc.abstractmethod
     @validates_schema
-    def validate_registration(self, data, **kwargs):
+    def _validate_schema(self, data, **kwargs):
+        return self.validate_schema(data, **kwargs)
+
+    @abc.abstractmethod
+    def validate_schema(self, data, **kwargs):
         ...
