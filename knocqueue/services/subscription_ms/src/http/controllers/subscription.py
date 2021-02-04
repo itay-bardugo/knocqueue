@@ -11,12 +11,12 @@ class Subscription(Resource):
         'simple': 'credentials'
     }
 
-    def post(self, method):
+    def get(self, method):
         try:
             register = factory.make(Subscription.__map[method])
-            return register.register(request.args)
+            return register.execute(request.args)
         except ValidationError as e:
             return e.messages, 400
-        except KeyError:
-            return 'Bad Request', 400
+        except KeyError as e:
+            return 'Bad Request!: {}'.format(e), 400
 

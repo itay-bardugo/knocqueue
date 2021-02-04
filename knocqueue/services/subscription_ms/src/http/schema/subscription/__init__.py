@@ -10,7 +10,7 @@ class Registration(BaseSchema):
     allow_news_letter = fields.Bool(required=False, data_key='allowNewsLetter')
 
     def __init__(self, **kwargs):
-        self.__repository: Type[SubscriptionRepository] = kwargs.pop('repository')
+        self.__repository: Type[SubscriptionRepository] = kwargs.get('repository')
         super().__init__(**kwargs)
 
     def validate_registration(self, data, **kwargs):
