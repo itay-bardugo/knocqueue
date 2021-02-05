@@ -13,8 +13,8 @@ class Registration(BaseSchema):
         super().__init__(**kwargs)
         self._repository: Type[SubscriptionRepository]
 
-    def validate_registration(self, data, **kwargs):
-        self.when(self.__repository.get_by_email(data['email'])) \
+    def validate_schema(self, data, **kwargs):
+        self.when(self._repository.get_by_email(data['email'])) \
             .happens() \
             .then \
             .raise_an_error(ValidationError({'code': 405}))
