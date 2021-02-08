@@ -1,7 +1,7 @@
 from src.repositories.subscription import SubscriptionRepository
 from typing import Type
 from knocqueue_utils import schema
-from marshmallow import  ValidationError
+from marshmallow import ValidationError
 
 
 class Registration(schema.BaseSchema):
