@@ -1,13 +1,13 @@
 from src.repositories.subscription import SubscriptionRepository
 from typing import Type
-from knocqueue_utils.schema import BaseSchema
-from marshmallow import fields, ValidationError
+from knocqueue_utils import schema
+from marshmallow import  ValidationError
 
 
-class Registration(BaseSchema):
-    email = fields.Email(required=True, data_key='email')
-    password = fields.Str(required=True, data_key='password')
-    allow_news_letter = fields.Bool(required=False, data_key='allowNewsLetter')
+class Registration(schema.BaseSchema):
+    email = schema.Email(required=True, data_key='email')
+    password = schema.Str(required=True, data_key='password')
+    allow_news_letter = schema.Bool(required=False, data_key='allowNewsLetter')
     _repository: Type[SubscriptionRepository]
 
     def validate_schema(self, data, **kwargs):
