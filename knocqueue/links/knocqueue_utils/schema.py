@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema
+from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema, post_load
 from knocqueue_utils.interfaces.when import IWhen, When, Expression
 import abc
 
@@ -44,3 +44,10 @@ class BaseSchema(Schema, IWhen):
     @abc.abstractmethod
     def validate_schema(self, data, **kwargs):
         ...
+
+    def _on_post_load(self, data, **kwargs):
+        ...
+
+    @post_load
+    def _post_load(self, data, **kwargs):
+        return self._on_post_load(data, **kwargs)

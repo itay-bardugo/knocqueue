@@ -17,6 +17,10 @@ class Registration(schema.BaseSchema):
             .then \
             .raise_an_error(ValidationError('ms-user-exists'))
 
+    def _on_post_load(self, data, **kwargs):
+        #return SubscriptionRepository.model
+        ...
+
 
 class CredentialsRegistrationSchema(Registration):
     ...
