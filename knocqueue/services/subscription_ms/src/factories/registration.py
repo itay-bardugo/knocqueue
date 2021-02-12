@@ -5,9 +5,8 @@ from src.repositories.subscription import SubscriptionRepository
 from src.http.schema.subscription import CredentialsRegistrationSchema
 
 
-class RegistrationFactory(Factory):
-    def make(self, method, *args, **kwargs) -> RegisterService:
-        return super().make(method, *args, **kwargs)
+class RegistrationFactory(Factory[RegisterService]):
+    ...
 
 
 class CredentialsBuilder(Builder):

@@ -1,14 +1,17 @@
 import abc
+from typing import TypeVar, Generic
+
+T = TypeVar('T')
 
 
-class Factory(metaclass=abc.ABCMeta):
+class Factory(Generic[T], metaclass=abc.ABCMeta):
     def __init__(self):
         self._builders = {}
 
     def register(self, method, builder: 'Builder'):
         self._builders[method] = builder
 
-    def make(self, method, *args, **kwargs):
+    def make(self, method, *args, **kwargs) -> T:
         return self._builders[method](*args, **kwargs)
 
 
