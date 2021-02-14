@@ -1,6 +1,10 @@
 from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_schema, post_load
 from knocqueue_utils.interfaces.when import IWhen, When, Expression
 import abc
+from knocqueue_utils.repository import Repository
+from typing import TypeVar, Generic
+
+_R = TypeVar('R', bound=Repository)
 
 fields.Field.default_error_messages |= {
     "required": "ms-required",
@@ -26,7 +30,9 @@ class Bool(CustomInvalidError, fields.Bool):
     ...
 
 
-class BaseSchema(Schema, IWhen):
+class BaseSchema(Generic[_R], Schema, IWhen):
+    _repository: _R
+
     class Meta:
         unknown = INCLUDE
 
