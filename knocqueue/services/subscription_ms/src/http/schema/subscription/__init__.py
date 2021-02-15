@@ -1,5 +1,6 @@
 from src.repositories.subscription import SubscriptionRepository
 from knocqueue_utils import schema
+from src.models import Subscription
 from marshmallow import ValidationError, validate
 
 
@@ -16,8 +17,7 @@ class Registration(schema.BaseSchema[SubscriptionRepository]):
             .raise_an_error(ValidationError('ms-user-exists'))
 
     def _on_post_load(self, data, **kwargs):
-        #return SubscriptionRepository.model
-        ...
+        return Subscription(**data)
 
 
 class CredentialsRegistrationSchema(Registration):
