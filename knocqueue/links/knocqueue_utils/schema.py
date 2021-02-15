@@ -2,9 +2,9 @@ from marshmallow import Schema, fields, ValidationError, INCLUDE, validates_sche
 from knocqueue_utils.interfaces.when import IWhen, When, Expression
 import abc
 from knocqueue_utils.repository import Repository
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, Type
 
-_R = TypeVar('R', bound=Repository)
+_R = TypeVar('_R', bound=Repository)
 
 fields.Field.default_error_messages |= {
     "required": "ms-required",
@@ -31,7 +31,7 @@ class Bool(CustomInvalidError, fields.Bool):
 
 
 class BaseSchema(Generic[_R], Schema, IWhen):
-    _repository: _R
+    _repository: Type[_R]
 
     class Meta:
         unknown = INCLUDE
