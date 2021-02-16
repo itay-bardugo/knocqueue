@@ -1,4 +1,4 @@
-from typing import Callable, Any
+from typing import Callable, Any, Tuple, Type
 import abc
 
 
@@ -15,9 +15,9 @@ class _BaseThen(metaclass=abc.ABCMeta):
             self._flag = True
             return callable_()
 
-    def raise_an_error(self, exception: BaseException):
+    def raise_an_error(self, exception: Tuple[Type[BaseException], str]):
         def _():
-            raise exception
+            raise exception[0](exception[1])
 
         self._do_if_confirmed(_)
         return self
@@ -72,5 +72,6 @@ class When(type):
 
     def kill(cls):
         cls._expression = None
+
 
 Expression = _Expression

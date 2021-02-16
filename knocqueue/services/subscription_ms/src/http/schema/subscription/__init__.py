@@ -9,12 +9,14 @@ class Registration(schema.BaseSchema[SubscriptionRepository]):
     password = schema.Str(required=True, validate=[validate.Length(min=6, max=16, error='ms-password-length')],
                           data_key='password')
     allow_news_letter = schema.Bool(required=False, data_key='allowNewsLetter')
+    first_name = schema.Str(required=True, data_key='first_name')
+    last_name = schema.Str(required=True, data_key='last_name')
 
     def validate_schema(self, data, **kwargs):
-        self.when(self._repository.get_by_email(data['email'])) \
+        self.when(self._repository.filter_by_first(email=data['email'])) \
             .happens() \
             .then \
-            .raise_an_error(ValidationError('ms-user-exists'))
+            .raise_an_error((ValidationError, 'ms-user-exists'))
 
     def _on_post_load(self, data, **kwargs):
         return Subscription(**data)

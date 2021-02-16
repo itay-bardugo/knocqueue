@@ -7,7 +7,8 @@ import uuid
 
 class Subscription(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    name = db.Column(db.String(255))
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
     email = db.Column(db.String(255))
     password = db.Column(db.String(255))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
@@ -18,4 +19,4 @@ class Subscription(db.Model):
 @listens_for(Subscription, 'before_insert')
 def _salting(mapper, connection, target: Subscription):
     if target.password:
-        target.password = hashlib.md5(target.password.encode).hexdigest()
+        target.password = hashlib.md5(target.password.encode()).hexdigest()

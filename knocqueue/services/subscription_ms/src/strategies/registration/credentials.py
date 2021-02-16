@@ -2,5 +2,5 @@ from . import RegistrationStrategy
 
 
 class RegisterWithCredentialsStrategy(RegistrationStrategy):
-    def register(self):
-        return 'yes!'
+    def register(self, subscription):
+        self._repository.insert(subscription)

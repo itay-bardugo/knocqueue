@@ -10,4 +10,4 @@ class RegisterService(Process[Subscription]):
         super().__init__(**kwargs)
 
     def _execute(self):
-        return self._strategy.register()
+        return self._strategy.register(self.model())
