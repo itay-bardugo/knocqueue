@@ -18,4 +18,4 @@ class Subscription(db.Model):
 @listens_for(Subscription, 'before_insert')
 def _salting(mapper, connection, target: Subscription):
     if target.password:
-        target.password = hashlib.md5(target.password.encpde).hexdigest()
+        target.password = hashlib.md5(target.password.encode).hexdigest()
