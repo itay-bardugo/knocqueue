@@ -1,5 +1,5 @@
-from src.tests import BaseTestCase
-from unittest.mock import patch, MagicMock
+from tests import BaseTestCase
+from unittest.mock import patch
 
 
 class TestRegistration(BaseTestCase):
@@ -9,7 +9,7 @@ class TestRegistration(BaseTestCase):
         response = self.app.post('/subscription/register/simple')
         self.assertEqual(200, response.status_code)
 
-    @patch.dict('src.routes.Subscription._Subscription__map', {'pass': 'pass'})
+    @patch.dict('src.routes.Subscription._Subscription__map', {'pass': 'pass'}, clear=True)
     def test_it_responds_with_404_on_undefined_registration_type(self):
         response = self.app.post('/subscription/register/invalid')
         self.assertEqual(404, response.status_code)
