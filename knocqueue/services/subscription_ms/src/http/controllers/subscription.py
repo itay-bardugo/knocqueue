@@ -17,4 +17,4 @@ class Subscription(Resource):
         except ValidationError as e:
             return e.messages, 400
         except KeyError as e:
-            return 'Bad Request!', 400
+            return 'Invalid action', 404
