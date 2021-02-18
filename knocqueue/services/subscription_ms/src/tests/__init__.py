@@ -1,5 +1,6 @@
 from unittest import TestCase
 from src.main import app
+from flask import Response
 
 
 class BaseTestCase(TestCase):
@@ -7,3 +8,4 @@ class BaseTestCase(TestCase):
         app.config['TESTING'] = True
         app.config['DEBUG'] = False
         self.app = app.test_client()
+        self.response = lambda *args, **kwargs: Response(*args, **kwargs)
