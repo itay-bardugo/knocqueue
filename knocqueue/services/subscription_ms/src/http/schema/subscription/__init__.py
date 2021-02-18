@@ -12,11 +12,14 @@ class Registration(schema.BaseSchema[SubscriptionRepository]):
     first_name = schema.Str(required=True, data_key='first_name')
     last_name = schema.Str(required=True, data_key='last_name')
 
-    def validate_schema(self, data, **kwargs):
-        self.when(self._repository.filter_by_first(email=data['email'])) \
+    def _email_not_exists(self, email):
+        self.when(self._repository.filter_by_first(email=email)) \
             .happens() \
             .then \
             .raise_an_error((ValidationError, 'ms-user-exists'))
+
+    def validate_schema(self, data, **kwargs):
+        self._email_not_exists(data['email'])
 
     def _on_post_load(self, data, **kwargs):
         return Subscription(**data)
