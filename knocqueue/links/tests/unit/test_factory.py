@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 from knocqueue_utils.factories import Factory, Builder
 
 
-class Factory_(Factory):
+class FactoryTest(Factory[int]):
     ...
 
 
@@ -20,9 +20,15 @@ class TestFactory(TestCase):
 
     def test_it_can_be_inherited(self):
         try:
-            Factory_()
+            FactoryTest()
         except TypeError:
             self.fail()
 
-    def test_it_registers_and_returns(self):
-        ...
+    def test_it_runs_the_builder(self):
+        builder = B()
+
+        with patch.object(type(builder), '__call__') as mock:
+            f = FactoryTest()
+            f.register('test', builder)
+            f.make('test')
+            mock.assert_called()
