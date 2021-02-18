@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 
 
 class TestRegistration(BaseTestCase):
-    @patch('src.routes.Subscription.post')
+    @patch('src.factories.registration.RegisterService.execute')
     def test_it_responds_with_200_on_simple_registration(self, registration_endpoint):
         registration_endpoint.return_value = self.response('OK')
         response = self.app.post('/subscription/register/simple')
