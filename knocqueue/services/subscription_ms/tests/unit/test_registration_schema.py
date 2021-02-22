@@ -20,26 +20,21 @@ class TestRegistrationSchema(TestCase):
             self.registration_schema._email_not_exists('test')
 
     def test_it_fails_on_missing_inputs(self):
-        with self.assertRaises(ValidationError):
-            self.registration_schema.load({'email': 'test@test.com'})
+        self.assertTrue(self.registration_schema.validate({'email': 'test@test.com'}))
 
-        with self.assertRaises(ValidationError):
-            self.registration_schema.load({'password': '123456'})
+        self.assertTrue(self.registration_schema.validate({'password': '123456'}))
 
-        with self.assertRaises(ValidationError):
-            self.registration_schema.load({'first_name': 'test'})
+        self.assertTrue(self.registration_schema.validate({'first_name': 'test'}))
 
-        with self.assertRaises(ValidationError):
-            self.registration_schema.load({'last_name': 'test'})
+        self.assertTrue(self.registration_schema.validate({'last_name': 'test'}))
 
     def test_it_accepts_all_required_inputs(self):
-        try:
-            self.registration_schema.validate({
+        with patch.object(self.registration_schema, 'validate_schema') as mock:
+            mock.return_value = True
+            errors = self.registration_schema.validate({
                 'email': 'test@test.com',
                 'password': '123456',
                 'first_name': 'test',
                 'last_name': 'test'
             })
-        except ValidationError as v:
-            print(str(v))
-            self.fail()
+            self.assertFalse(errors)
